@@ -25,8 +25,8 @@ pipeline {
         stage('Build Docker OWN image') {
                         agent { label 'master'  }
             steps {
-                sh "sudo docker build -t  webdevprashant/javaweb:${BUILD_NUMBER}  ."
-                //sh 'whoami'
+                sh "sudo docker build -t  sachinkumar69/javaweb:${BUILD_NUMBER}  ."
+   
             }
             
         }
@@ -38,10 +38,10 @@ pipeline {
                 
                 withCredentials([string(credentialsId: 'Docker_hub_password', variable: 'Docker_hub_password')]) {
     // some block
-                 sh "sudo docker login -u webdevprashant -p $Docker_hub_password"
+                 sh "sudo docker login -u sachinkumar69 -p $Docker_hub_password"
 }
                
-              sh "sudo docker push webdevprashant/javaweb:${BUILD_NUMBER}"
+              sh "sudo docker push sachinkumar69/javaweb:${BUILD_NUMBER}"
             }
             
         }
@@ -51,7 +51,7 @@ pipeline {
                         agent { label 'master'  }
             steps {
                 sh 'sudo docker rm -f myjavaapp'
-                sh "sudo docker run  -d  -p  1230:8080 --name myjavaapp   webdevprashant/javaweb:${BUILD_NUMBER}"
+                sh "sudo docker run  -d  -p  1230:8080 --name myjavaapp   sachinkumar69/javaweb:${BUILD_NUMBER}"
                 //sh 'whoami'
             }
             
@@ -68,7 +68,7 @@ pipeline {
              // sh "ssh  -o  StrictHostKeyChecking=no ec2-user@13.233.100.238 sudo docker rm -f myjavaapp"
             // sh "ssh ec2-user@13.233.100.238 sudo docker run  -d  -p  8080:8080 --name myjavaapp   vimal13/javaweb:${BUILD_TAG}"
             sh "sudo docker rm -f myapp"
-            sh "sudo docker run -d -it --name myapp -p 1235:8080  webdevprashant/javaweb:${BUILD_NUMBER}"
+            sh "sudo docker run -d -it --name myapp -p 1235:8080  sachinkumar69/javaweb:${BUILD_NUMBER}"
 
             }
             
@@ -122,7 +122,7 @@ pipeline {
                     // sh "ssh ec2-user@13.232.250.244 sudo kubectl  scale deployment myjavawebapp --replicas=5"
             //   }
             bat 'cmd /c kubectl  delete    deployment myjavawebapp'
-            bat 'cmd /c kubectl  create    deployment myjavawebapp  --image=webdevprashant/javaweb:${BUILD_TAG}'
+            bat 'cmd /c kubectl  create    deployment myjavawebapp  --image=sachinkumar69/javaweb:${BUILD_TAG}'
             bat 'curl -o myappsvc.yml https://raw.githubusercontent.com/vimallinuxworld13/jenkins-docker-maven-java-webapp/master/webappsvc.yml'
             bat 'cmd /c kubectl  apply -f webappsvc.yml'
             bat 'cmd /c kubectl  scale deployment myjavawebapp --replicas=5'
